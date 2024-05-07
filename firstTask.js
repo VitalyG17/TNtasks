@@ -11,14 +11,9 @@ class ApiRandomService {
   #API_URL = "https://www.random.org";
 
   async getRandomNumber(minLimit, maxLimit) {
-    try {
-      const url = `${this.#API_URL}/integers/?num=1&min=${minLimit}&max=${maxLimit}&col=1&base=10&format=plain&rnd=new&apiKey=${this.#API_KEY}`;
-      const response = await fetch(url);
-      const randomNumber = await response.text();
-      return randomNumber;
-    } catch (error) {
-      return error;
-    }
+    const url = `${this.#API_URL}/integers/?num=1&min=${minLimit}&max=${maxLimit}&col=1&base=10&format=plain&rnd=new&apiKey=${this.#API_KEY}`;
+    const response = await fetch(url);
+    return response.text();
   }
 }
 
@@ -27,11 +22,7 @@ class RandomService {
 
   async generateRandomNumber(minLimit, maxLimit) {
     try {
-      const number = await RandomService.apiRandomService.getRandomNumber(
-        minLimit,
-        maxLimit
-      );
-      return number !== undefined ? number : minLimit;
+      return await RandomService.apiRandomService.getRandomNumber(minLimit, maxLimit);
     } catch (error) {
       console.error(error);
       return minLimit;
