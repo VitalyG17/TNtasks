@@ -18,11 +18,11 @@ class ApiRandomService {
 }
 
 class RandomService {
-  static apiRandomService = new ApiRandomService();
+  apiRandomService = new ApiRandomService();
 
   async generateRandomNumber(minLimit, maxLimit) {
     try {
-      return await RandomService.apiRandomService.getRandomNumber(minLimit, maxLimit);
+      return await this.apiRandomService.getRandomNumber(minLimit, maxLimit);
     } catch (error) {
       console.error(error);
       return minLimit;
