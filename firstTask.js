@@ -6,25 +6,13 @@ generateRandomNumber (он принимает в себя два аргумен�
 этот метод необходимо вызвать непосредственно в generateRandomNumber
 */
 
-const API_KEY = "d2fa2b7c-aad7-4609-9115-f3d0f0407a64";
-const API_URL = "https://www.random.org";
-
-class RandomService {
-  constructor() {
-    this.apiRandomService = new ApiRandomService();
-  }
-  generateRandomNumber(minLimit, maxLimit) {
-    return this.apiRandomService.getRandomNumber(minLimit, maxLimit);
-  }
-}
 class ApiRandomService {
-  constructor() {
-    this.apiKey = API_KEY;
-    this.apiUrl = API_URL;
-  }
+  #API_KEY = "d2fa2b7c-aad7-4609-9115-f3d0f0407a64";
+  #API_URL = "https://www.random.org";
+
   async getRandomNumber(minLimit, maxLimit) {
     try {
-      const url = `${this.apiUrl}/integers/?num=1&min=${minLimit}&max=${maxLimit}&col=1&base=10&format=plain&rnd=new&apiKey=${this.apiKey}`;
+      const url = `${this.#API_URL}/integers/?num=1&min=${minLimit}&max=${maxLimit}&col=1&base=10&format=plain&rnd=new&apiKey=${this.#API_KEY}`;
       const response = await fetch(url);
       const randomNumber = await response.text();
       return randomNumber;
@@ -34,15 +22,26 @@ class ApiRandomService {
   }
 }
 
-//Вызов
+class RandomService {
+  static apiRandomService = new ApiRandomService();
+
+  async generateRandomNumber(minLimit, maxLimit) {
+    try {
+      const number = await RandomService.apiRandomService.getRandomNumber(
+        minLimit,
+        maxLimit
+      );
+      return number !== undefined ? number : minLimit;
+    } catch (error) {
+      console.error(error);
+      return minLimit;
+    }
+  }
+}
+
+// Вызов
 const randomService = new RandomService();
 randomService
-  .generateRandomNumber(1, 10) //ввод границ генерируемого числа
-  .then((number) => {
-    if (number !== undefined) {
-      console.log(number);
-    } else {
-      throw new Error("При генерации вернулось undefined");
-    }
-  })
+  .generateRandomNumber(1, 10)
+  .then((number) => console.log(number))
   .catch((error) => console.error(error));
