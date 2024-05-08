@@ -6,11 +6,13 @@ function isEqual(obj1, obj2) {
   const isObjects = typeof obj1 === "object" && typeof obj2 === "object";
   if (!isObjects) return obj1 === obj2;
 
-  if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
 
- return Object.keys(obj1).every(key => isEqual(obj1[key], obj2[key]));
+  if (keys1.length !== keys2.length) return false;
+
+  return !keys1.some(key => !isEqual(obj1[key], obj2[key]));
 }
-
 const firstObj = {
   name: "Игорь",
   age: 21,
