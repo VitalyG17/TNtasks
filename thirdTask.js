@@ -7,12 +7,8 @@ function isEqual(obj1, obj2) {
   if (!isObjects) return obj1 === obj2;
 
   if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
-  for (let key in obj1) {
-    if (!isEqual(obj1[key], obj2[key])) {
-      return false;
-    }
-  }
-  return true;
+
+ return Object.keys(obj1).every(key => isEqual(obj1[key], obj2[key]));
 }
 
 const firstObj = {
@@ -37,7 +33,7 @@ const secondObj = {
     postCode: {
       id: 1,
       num: 903014,
-    },
+    }
   },
 };
 
